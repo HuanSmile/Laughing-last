@@ -5,20 +5,24 @@
         <%@ include file="/inc/includeOldBase.jsp" %>
     </head>
     <body>
-        <display:table name="list" requestURI="${app}/uploaddata/detaillist.do" class="list" id="row"
-            style="width:${(colsList.size()-2)*10+100}%" partialList="true" size="size" cellpadding="0"
-            pagesize="${param.pageSize}" export="false" sort="external">
-            <c:forEach items="${colsList}" var="item">
-                <display:column title="${item.column_comment}" property="${item.column_name}"/>
-            </c:forEach>
+        <display:table name="list" requestURI="${app}/uploaddata/tasklist.do" class="list" id="row" style="width:100%"
+            partialList="true" size="size" cellpadding="0" pagesize="${param.pageSize}" export="true" sort="external">
+            <display:column title="任务编号" property="task_id"/>
             <display:column title="导入时间">
-                <f:formatDate value="${row.RECORD_DATE}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                <f:formatDate value="${row.create_time}" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </display:column>
+            <display:column title="导入工号" property="create_code"/>
+            <display:column title="项目名称" property="remark"/>
+            <display:column title="任务状态" property="stat"/>
+            <display:column title="任务执行开始时间">
+                <f:formatDate value="${row.begin_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
+            </display:column>
+            <display:column title="任务执行结束时间">
+                <f:formatDate value="${row.end_date}" pattern="yyyy-MM-dd HH:mm:ss"/>
             </display:column>
         </display:table>
         <div style="color:red;font-size: 16px;padding-left: 50px;padding-top: 0px;text-align: left">
-            <c:if test="${param.config_id == '1001'||param.config_id == '1002'}">
-                基站信息如变更，请通过“新建站导入数据入口”重新导入，此功能为覆盖新增，以CellName为准，如有重复则覆盖之前信息
-            </c:if>
+            此导入功能建立任务后需等待几分钟，待后台程序执行入库任务完成后可在新建站导入明细菜单查看明细。
         </div>
     </body>
     <script type="text/javascript">
